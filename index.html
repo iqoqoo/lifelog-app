@@ -38,31 +38,54 @@
     }
   </script>
 
-<button id="save-log">ログを保存する</button>
+<!-- ボタン部分 -->
+<button id="save-log">ログを保存（ダウンロード）</button>
+<input type="file" id="load-log" accept=".json" style="display:none;">
+<button id="load-log-btn">ログを復元（読み込み）</button>
 
 <script>
+// 保存（ダウンロード）
 document.getElementById('save-log').addEventListener('click', function () {
-  // ローカルストレージのデータを取得
   const data = localStorage.getItem('lifelog');
-
   if (!data) {
     alert('保存するログが見つかりませんでした。');
     return;
   }
-
-  // Blob を作成して JSON ファイルとして保存
   const blob = new Blob([data], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'lifelog_backup.json'; // ダウンロードされるファイル名
+  a.download = 'lifelog_backup.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url); // メモリ開放
+  URL.revokeObjectURL(url);
+});
+
+// 復元（読み込み）
+document.getElementById('load-log-btn').addEventListener('click', function () {
+  document.getElementById('load-log').click();
+});
+
+document.getElementById('load-log').addEventListener('change', function (event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      localStorage.setItem('lifelog', JSON.stringify(data));
+      alert('ログを復元しました。ページを再読み込みしてください。');
+    } catch (err) {
+      alert('読み込んだファイルの形式が正しくありません。');
+    }
+  };
+  reader.readAsText(file);
 });
 </script>
+
 
 
 </body>
