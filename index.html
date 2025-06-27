@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ログ一覧</title>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/timezone.js"></script>
+  <script>
+    dayjs.extend(dayjs_plugin_utc);
+    dayjs.extend(dayjs_plugin_timezone);
+  </script>
+</head>
+<body>
+  <h1>保存されたライフログ</h1>
+  <ul id="logList"></ul>
+
+  <script>
+    const logs = JSON.parse(localStorage.getItem("lifeLogs") || "[]");
+    const logList = document.getElementById("logList");
+
+    logs.forEach(log => {
+  const li = document.createElement("li");
+  // timestampがあれば整形、なければ空文字
+  const formattedTime = log.timestamp
+    ? dayjs(log.timestamp).tz('Asia/Tokyo').format('HH:mm')
+    : '';
+
+  li.textContent = `📅 ${log.date} ${formattedTime}｜ 🩺 体調: ${log.condition} ｜ 🍚 食事: ${log.meals}`;
+  logList.appendChild(li);
+});
+
+
+    if (logs.length === 0) {
+      const li = document.createElement("li");
+      li.textContent = "まだログがありません。";
+      logList.appendChild(li);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>JSONデモ</title>
+</head>
+<body>
+<form id="logForm">
+  <label>日付: <input type="date" name="date"></label><br>
+  <label>体調: <input type="text" name="condition"></label><br>
+  <label>食事内容: <textarea name="meals"></textarea></label><br>
+  <button type="submit">保存</button>
+</form>
+
+<script>
+  const form = document.getElementById("logForm");
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // ページの再読み込みを止める
+
+    // 入力値を取得
+    const date = form.date.value;
+    const condition = form.condition.value;
+    const meals = form.meals.value;
+
+    // 現在日時をISO形式で取得
+    const timestamp = new Date().toISOString();
+
+    // 既存のデータを取得（なければ空配列）
+    const logs = JSON.parse(localStorage.getItem("lifeLogs") || "[]");
+
+    // 新しいログを作成
+    const newLog = {
+      date: date,
+      timestamp: timestamp,
+      condition: condition,
+      meals: meals,
+    };
+
+    // 配列に追加して保存
+    logs.push(newLog);
+    localStorage.setItem("lifeLogs", JSON.stringify(logs));
+
+    // フォームをリセット（任意）
+    form.reset();
+
+    alert("保存しました！");
+  });
+</script>
+</body>
+</html>
