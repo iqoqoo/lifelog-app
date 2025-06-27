@@ -16,7 +16,7 @@
   <ul id="logList"></ul>
 
   <script>
-    const logs = JSON.parse(localStorage.getItem("lifeLogs") || "[]");
+    const logs = JSON.parse(localStorage.getItem("lifelog") || "[]");
     const logList = document.getElementById("logList");
 
     logs.forEach(log => {
