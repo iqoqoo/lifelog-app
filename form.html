@@ -27,7 +27,7 @@
     const timestamp = new Date().toISOString();
 
     // 既存のデータを取得（なければ空配列）
-    const logs = JSON.parse(localStorage.getItem("lifeLogs") || "[]");
+    const logs = JSON.parse(localStorage.getItem("lifelog") || "[]");
 
     // 新しいログを作成
     const newLog = {
@@ -39,7 +39,7 @@
 
     // 配列に追加して保存
     logs.push(newLog);
-    localStorage.setItem("lifeLogs", JSON.stringify(logs));
+    localStorage.setItem("lifelog", JSON.stringify(logs));
 
     // フォームをリセット（任意）
     form.reset();
