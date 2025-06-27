@@ -37,5 +37,33 @@
       logList.appendChild(li);
     }
   </script>
+
+<button id="save-log">ログを保存する</button>
+
+<script>
+document.getElementById('save-log').addEventListener('click', function () {
+  // ローカルストレージのデータを取得
+  const data = localStorage.getItem('lifelog');
+
+  if (!data) {
+    alert('保存するログが見つかりませんでした。');
+    return;
+  }
+
+  // Blob を作成して JSON ファイルとして保存
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'lifelog_backup.json'; // ダウンロードされるファイル名
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url); // メモリ開放
+});
+</script>
+
+
 </body>
 </html>
